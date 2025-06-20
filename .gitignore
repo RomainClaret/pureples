@@ -16,6 +16,9 @@ pureples/experiments/*/neat_*_winner
 pureples/experiments/*/neat_*_winner.pdf
 pureples/experiments/*/winner_neat_*.pkl
 
+pureples/experiments/mnist/*
+pureples/experiments/xor2/*
+
 # C extensions
 *.so
 
@@ -103,3 +106,4 @@ ENV/
 
 # Trash
 .png
+.DS_Store
