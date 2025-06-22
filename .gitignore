@@ -107,3 +107,4 @@ ENV/
 # Trash
 .png
 .DS_Store
+.gitignore

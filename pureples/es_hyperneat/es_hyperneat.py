@@ -185,7 +185,10 @@ class ESNetwork:
                     else:
                         con = Connection(c.x, c.y, coord[0], coord[1], c.w)
                 if con is not None:
-                    # Nodes will only connect upwards.
+                    # CRITICAL: ES-HyperNEAT validates the CHILD's weight (c.w), not the connection weight!
+                    # This is because the child represents a potential node location, and we only
+                    # create connections to locations with non-zero activation.
+                    # Also: Nodes will only connect upwards (y1 < y2).
                     # If connections to same layer is wanted, change to con.y1 <= con.y2.
                     if not c.w == 0.0 and con.y1 < con.y2 and not (con.x1 == con.x2 and con.y1 == con.y2):
                         self.connections.add(con)
@@ -270,8 +273,10 @@ class ESNetwork:
             if (c.x1, c.y1) in true_nodes and (c.x2, c.y2) in true_nodes:
                 true_connections.add(c)
 
-        true_nodes -= (set(self.substrate.input_coordinates)
-                       .union(set(self.substrate.output_coordinates)))
+        # Convert coordinates to tuples for set operations
+        input_coords_tuples = set(tuple(coord) for coord in self.substrate.input_coordinates)
+        output_coords_tuples = set(tuple(coord) for coord in self.substrate.output_coordinates)
+        true_nodes -= input_coords_tuples.union(output_coords_tuples)
 
         return true_nodes, true_connections
 
